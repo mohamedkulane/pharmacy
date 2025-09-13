@@ -11,9 +11,9 @@ import { Link, Outlet } from "react-router-dom";
 export function Sidebar() {
   return (
     <div className="flex gap-4">
-      <aside className="w-64 bg-white border-r border-blue-100 flex flex-col p-4 min-h-screen">
+      <aside className="w-64 bg-white border-r border-blue-100 flex flex-col p-3 min-h-screen">
         <h2 className="text-xl font-bold text-black mb-6">Dashboard</h2>
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 space-y-2">
          <Link to="dashboard"> <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-black text-xl font-medium hover:bg-blue-50 cursor-pointer mt-10">
             <Home className="w-8 h-8 text-blue-600" />
             Dashboard
