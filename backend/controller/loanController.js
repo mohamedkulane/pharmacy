@@ -35,4 +35,34 @@ const deleteLoan=async(req,res)=>{
     }
 }
 
-module.exports={createLoan,readLoan,deleteLoan}
+const readSingleData=async(req,res)=>{
+    try {
+    const getSingle=await loanModel.find({_id:req.params.id})
+
+    if(getSingle){
+        res.send(getSingle)
+    }
+        
+    } catch (error) {
+        res.status(401).json({error:"server error"})
+        
+    }
+
+}
+
+const updateLoan=async(req,res)=>{
+    try {
+        const update=await loanModel.updateOne(
+            {_id:req.params.id},
+            {$set:req.body}
+        )
+        if(update){
+            res.send("success update")
+        }
+
+    } catch (error) {
+        
+    }
+}
+
+module.exports={createLoan,readLoan,deleteLoan,readSingleData,updateLoan}

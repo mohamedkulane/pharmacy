@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 
 export default function Loans(){
@@ -59,7 +59,7 @@ export default function Loans(){
         <div className="flex gap-[40rem] items-center">
             <h1 className="text-3xl font-semibold text-black underline-offset-4 underline">My Debts:</h1>
             <div>
-            <button onClick={()=>setIsopen(true)} className="bg-gradient-to-r from-blue-400/50 via-blue-600/40 to-blue-400/75 active:bg-blue-700 text-white px-10 py-3 rounded-lg font-medium ml-2 text-xl" ><i className="fa-solid fa-plus text-xl"></i>Add Debt</button>
+            <button onClick={()=>setIsopen(true)} className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 active:bg-blue-700 text-white px-10 py-3 rounded-lg font-medium ml-2 text-xl" ><i className="fa-solid fa-plus text-xl"></i>Add Debt</button>
         </div>
         </div>
 
@@ -88,7 +88,7 @@ export default function Loans(){
                 <td className="px-5 py-2 text-xl font-medium">${item.price-item.paid}</td>
                 <td className="px-7 py-2 text-xl font-medium">
                     <div className="cursor-pointer">
-                        <i className="fa-solid fa-edit text-blue-600 mr-1"></i>
+                       <Link to={`/dashboard/updateLoan/${item._id}`}> <i className="fa-solid fa-edit text-blue-600 mr-1"></i></Link>
                         <i onClick={()=>handleDelete(item._id)} className="fa-solid fa-trash  active:text-red-600"></i>
                     </div>
                 </td>

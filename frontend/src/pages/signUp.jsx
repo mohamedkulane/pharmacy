@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 export default function SignUpForm() {
   const [name,setName]=useState("")
@@ -81,7 +81,7 @@ export default function SignUpForm() {
 
             <div className="text-center text-sm text-slate-500">
               <span>Already have an account?</span>
-              <button type="button" className="ml-2 font-medium text-black underline decoration-blue-200">Sign in</button>
+             <Link to="/login"><button type="button" className="ml-2 font-medium text-black underline decoration-blue-200">Sign in</button></Link> 
             </div>
           </form>
         </div>

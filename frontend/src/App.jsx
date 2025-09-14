@@ -7,6 +7,9 @@ import Selles from "./pages/selles";
 import Loans from "./pages/loans";
 import Dashboard from "./pages/dashboard";
 import Login from "./pages/login";
+import MainDashboard from "./pages/mianDashboard";
+import UpdateLoans from "./pages/upadateLoan";
+import { ToastContainer } from "react-toastify";
 
 export default function App(){
   return <div>
@@ -15,7 +18,9 @@ export default function App(){
       <Route path="/login" element={<Login/>}/>
       <Route path="dashboard" element={<Dashboard/>}>
       <Route path="medecine" element={<Medecine/>}/>
+      <Route path="maindashboard" element={<MainDashboard/>}/>
       <Route path="reports" element={<Reports/>}/>
+      <Route path="updateLoan/:id" element={<UpdateLoans/>}/>
       <Route path="borrowed" element={<BorrowedDebts/>}/>
       <Route path="seles" element={<Selles/>}/>
       <Route path="loans" element={<Loans/>}/>
@@ -23,5 +28,6 @@ export default function App(){
       </Route>
 
     </Routes>
+      <ToastContainer  position="top-center" autoClose={3000} />
   </div>
 }

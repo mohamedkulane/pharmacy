@@ -12,13 +12,14 @@ export default function Login() {
       name,
       email,
       password
-    }).then(()=>{
+    }).then((res)=>{
       Swal.fire({
   title: "Login successfully!",
   icon: "success",
   draggable: true
 });
       navigate("/dashboard")
+      localStorage.setItem("Admin", JSON.stringify(res))
     }).catch((err) => {
     console.error(err.response?.data || err.message);
     alert("registration failed");
@@ -63,14 +64,11 @@ export default function Login() {
                 type="button"
                 className="w-full rounded-xl py-3 font-semibold text-white bg-blue-600 hover:bg-blue-700 active:translate-y-0.5 transition-transform"
               >
-                Create account
+                Sign In account
               </button>
             </div>
 
-            <div className="text-center text-sm text-slate-500">
-              <span>Already have an account?</span>
-              <button type="button" className="ml-2 font-medium text-black underline decoration-blue-200">Sign in</button>
-            </div>
+        
           </form>
         </div>
       </div>
