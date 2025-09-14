@@ -17,10 +17,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.1",
     "react-toastify": "^11.0.5",
-<<<<<<< HEAD
     "redux-persist": "^6.0.0",
-=======
->>>>>>> 9132cb11f173c2282db1177c3b544399a5e0c833
     "sweetalert2": "^11.23.0"
   },
   "devDependencies": {

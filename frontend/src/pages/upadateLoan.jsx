@@ -14,7 +14,7 @@ export default function UpdateLoans(){
 const navigate=useNavigate()
 const params=useParams()
     function handleReadSingle(){
-        axios.get(`http://localhost:5000/readSingle/loan/${params.id}`).then((res)=>{
+        axios.get(`http://localhost:5100/readSingle/loan/${params.id}`).then((res)=>{
             setname(res.data[0].name),
             setPhone(res.data[0].phone),
             setAddress(res.data[0].address),
@@ -29,7 +29,7 @@ useEffect(()=>{
 
     function handleUpdate(e){
         e.preventDefault()
-      axios.put(`http://localhost:5000/update/loan/${params.id}`,{
+      axios.put(`http://localhost:5100/update/loan/${params.id}`,{
         name,
         phone,
         address,

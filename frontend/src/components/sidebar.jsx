@@ -22,11 +22,11 @@ export function Sidebar() {
         {/* Profile Section */}
         <div className="flex items-center gap-2 mt-3 ml-1">
           <h1 className="w-9 h-9 bg-blue-600 text-white ml-1 pb-1.5 rounded-full text-2xl font-bold text-center flex items-center justify-center">
-            {JSON.parse(getAdmin).data?.Admin.name[0]}
+            {JSON.parse(getAdmin).data?.customer.name[0]}
           </h1>
           {isopen && (
             <h1 className="text-black text-lg font-medium">
-              Admin_<br /> {JSON.parse(getAdmin).data?.Admin.name}
+              Admin_<br /> {JSON.parse(getAdmin).data?.customer.name}
             </h1>
           )}
         </div>
