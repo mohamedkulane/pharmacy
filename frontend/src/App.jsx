@@ -7,6 +7,8 @@ import Selles from "./pages/selles";
 import Loans from "./pages/loans";
 import Dashboard from "./pages/dashboard";
 import Login from "./pages/login";
+import UpdateMedicine from "./pages/UpdateMed";
+import UpdateSelles from "./pages/UpdateSelles";
 
 export default function App(){
   return <div>
@@ -19,9 +21,9 @@ export default function App(){
       <Route path="borrowed" element={<BorrowedDebts/>}/>
       <Route path="seles" element={<Selles/>}/>
       <Route path="loans" element={<Loans/>}/>
-
       </Route>
-
+      <Route path="/Updatemedicine/:id" element={<UpdateMedicine/>}/>
+      <Route path="/Updateselles/:id" element={<UpdateSelles/>}/>
     </Routes>
   </div>
 }

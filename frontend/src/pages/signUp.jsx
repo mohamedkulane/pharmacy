@@ -9,7 +9,7 @@ export default function SignUpForm() {
   const navigate=useNavigate()
   function handleRegister(e){
     e.preventDefault()
-    axios.post("http://localhost:5000/create/admin",{
+    axios.post("http://localhost:5100/create/admin",{
       name,
       email,
       password

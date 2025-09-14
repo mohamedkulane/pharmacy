@@ -8,7 +8,7 @@ export default function Login() {
   const navigate=useNavigate()
   function handleRegister(e){
     e.preventDefault()
-    axios.post("http://localhost:5000/login/admin",{
+    axios.post("http://localhost:5100/login/admin",{
       name,
       email,
       password
