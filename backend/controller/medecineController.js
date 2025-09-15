@@ -23,26 +23,46 @@ const createMedecine=async(req,res)=>{
 }
 
 
-const readMedicine = async (req,res)=>{
-    try{
-          const {category} = req.body || {}
-          let filterData = {}
-          if(category)
-          {
-            filterData = {category}
-          }
+// const readMedicine = async (req,res)=>{
+//     try{
+//           const {category} = req.body || {}
+//           let filterData = {}
+//           if(category)
+//           {
+//             filterData = {category}
+//           }
 
-        const readData = await medecineModel.find(filterData)
-        if(readData)
-        {
-            res.send(readData)
-        }
-    } 
-    catch(error){
-        res.status(400).json({message:"server is not read medicine"})
-    }
+//         const readData = await medecineModel.find(filterData)
+//         if(readData)
+//         {
+//             res.send(readData)
+//         }
+//     } 
+//     catch(error){
+//         res.status(400).json({message:"server is not read medicine"})
+//     }
     
-}
+// }
+// Read all medicines (only stock > 0)
+const readMedicine = async (req, res) => {
+  try {
+    const { category } = req.body || {};
+    let filterData = {};
+
+    if (category) {
+      filterData = { category };
+    }
+
+    // Medicine aan eber ahayn kaliya soo saar
+    filterData.quantity = { $gt: 0 };
+
+    const readData = await medecineModel.find(filterData);
+    res.send(readData);
+  } catch (error) {
+    res.status(400).json({ message: "Server is not read medicine" });
+  }
+};
+
 
 
 
@@ -97,6 +117,31 @@ const deleteMedicine = async (req,res)=>{
         res.send("Deleted")
     }
 }
+// Search medicines by name or category (case-insensitive)
+const searchMedicine = async (req, res) => {
+  try {
+    const { query } = req.query; // URL query, e.g., ?query=Paracetamol
+
+    if (!query) {
+      return res.status(400).json({ message: "Query is required" });
+    }
+
+    // Raadi name ama category ku jira query
+    const results = await medecineModel.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+      quantity: { $gt: 0 } // kaliya kuwa aan eber ahayn
+    });
+
+    res.json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 
-module.exports={createMedecine,readMedicine,updateMedicine,Readsingle,deleteMedicine}
+
+module.exports={createMedecine,readMedicine,updateMedicine,Readsingle,deleteMedicine ,searchMedicine}

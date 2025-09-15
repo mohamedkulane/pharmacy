@@ -66,14 +66,14 @@ export default function Loans(){
         <table className="mt-5 p-3">
             <thead className="bg-blue-50 text-black">
                 <tr>
-                    <th className="px-8 py-3 text-xl font-medium">Names</th>
-                    <th className="px-8 py-3 text-xl font-medium">Phone</th>
-                    <th className="px-8 py-3 text-xl font-medium">Address</th>
-                    <th className="px-8 py-3 text-xl font-medium">Data</th>
-                    <th className="px-8 py-3 text-xl font-medium">Price</th>
-                    <th className="px-8 py-3 text-xl font-medium">Paid</th>
-                    <th className="px-8 py-3 text-xl font-medium">TotalPrice</th>
-                    <th className="px-8 py-3 text-xl font-medium">Actions</th>
+                    <th className="px-7 py-3 text-xl font-medium">Names</th>
+                    <th className="px-7 py-3 text-xl font-medium">Phone</th>
+                    <th className="px-7 py-3 text-xl font-medium">Address</th>
+                    <th className="px-7 py-3 text-xl font-medium">Data</th>
+                    <th className="px-7 py-3 text-xl font-medium">Price</th>
+                    <th className="px-7 py-3 text-xl font-medium">Paid</th>
+                    <th className="px-7 py-3 text-xl font-medium">TotalPrice</th>
+                    <th className="px-7 py-3 text-xl font-medium">Actions</th>
                 </tr>
             </thead>
             {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
 
 export default function MainDashboard() {
-  const [medicines, setMedicines] = useState([]);
+    const [medicines, setMedicines] = useState([]);
   const [sales, setSales] = useState([]);
   const [loans, setLoans] = useState([]);
 
@@ -15,8 +15,17 @@ export default function MainDashboard() {
           axios.get("http://localhost:5000/read/sales"),
           axios.get("http://localhost:5000/read/loan")
         ]);
-        setMedicines(medRes.data);
-        setSales(salesRes.data);
+
+        const medicinesData = medRes.data;
+
+        // Ku dar price sales-ka oo ka yimaada medicines.sell
+        const salesWithPrice = salesRes.data.map((s) => {
+          const med = medicinesData.find((m) => m.name === s.product);
+          return { ...s, price: med ? med.sell : 0 };
+        });
+
+        setMedicines(medicinesData);
+        setSales(salesWithPrice);
         setLoans(loanRes.data);
       } catch (err) {
         console.error(err);
@@ -26,17 +35,20 @@ export default function MainDashboard() {
   }, []);
 
   // Cards calculations
-  const totalMedicines = medicines.length;
-  const totalSales = sales.reduce((acc, item) => acc + item.price , 0);
-  const totalLoans = loans.reduce((acc, item) => acc + item.price-item.paid, 0);
+// Cards calculations
+const totalMedicines = medicines.length;
+const totalSales = sales.reduce((acc, item) => acc + item.price * item.quantity, 0);
+const totalLoans = loans.reduce((acc, item) => acc + (item.price - item.paid), 0);
+
 
   // Pie chart: Sales by Product
-  const salesByProduct = [];
-  sales.forEach((s) => {
-    const existing = salesByProduct.find((p) => p.name === s.product);
-    if (existing) existing.value += s.price * s.quantity;
-    else salesByProduct.push({ name: s.product, value: s.price * s.quantity });
-  });
+ const salesByProduct = [];
+sales.forEach((s) => {
+  const existing = salesByProduct.find((p) => p.name === s.product);
+  if (existing) existing.value += s.price * s.quantity;
+  else salesByProduct.push({ name: s.product, value: s.price * s.quantity });
+});
+
 
   // Bar chart: Loans Paid vs Unpaid
   const loansChartData = loans.map((loan) => ({

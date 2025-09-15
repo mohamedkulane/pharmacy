@@ -69,9 +69,10 @@ export default function Medecine(){
     return <>
      <div  style={{display:isOpen==true?"none":""}} className="pt-7  ">
         <div className=" flex justify-between px-6">
-            <div className="flex gap-[35rem] items-center">
+            <div className="flex gap-[34rem] items-center">
               <h1 className="text-3xl font-semibold">Our Medecine</h1>
                 <button onClick={HandleOpen} className="px-8 py-2 rounded-lg  text-2xl text-white bg-blue-500">Add New</button>
+  
             </div>
           
         </div>
@@ -81,8 +82,8 @@ export default function Medecine(){
               <th class="px-6 py-2 text-center text-xl font-semibold">ID</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">image</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">Name</th>
-              <th class="px-6 py-2 text-center text-xl font-semibold">purchase</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">sell</th>
+              <th class="px-6 py-2 text-center text-xl font-semibold">purchase</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">profit</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">category</th>
               <th class="px-6 py-2 text-center text-xl font-semibold">quantity</th>
@@ -97,8 +98,8 @@ export default function Medecine(){
                   <td class="px-10 py-3">{item.prId}</td>
                   <td> <img className="w-14 h-14 border-2 border-blue-50  rounded-lg" src={`http://localhost:5000/allImg/${item.mImage}`} alt="" /></td>
                   <td class="px-5 py-3">{item.name}</td>
-                  <td class="px-5 py-3">{item.sell}</td>
-                  <td class="px-5 py-3">{item.purchase}</td>
+                  <td class="px-5 py-3">${item.sell}</td>
+                  <td class="px-5 py-3">${item.purchase}</td>
                   <td class="px-5 py-3">{item.sell-item.purchase}</td>
                   <td class="px-5 py-3">{item.category}</td>
                   <td class="px-5 py-3">{item.quantity}</td>

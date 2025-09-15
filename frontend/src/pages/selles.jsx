@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 
-
+// import Swal from "sweetalert2";
 export default function Selles(){
     const [data,setData] = useState([])
     const [isOpen,setIsOpen] = useState(false)
@@ -20,22 +20,34 @@ export default function Selles(){
     // posting
     const [name,setName] = useState("")
     const [quantity,setQuantity] = useState("")
-    const [price,setPrice] = useState("")
     const [product,setProduct] = useState("")
+    const [price, setPrice] = useState("");
 
-    const Handleposting = (e) =>{
-        e.preventDefault()
-        axios.post("http://localhost:5000/create/sales",{
-            "name":name,
-            "quantity":quantity,
-            "price":price,
-            "product":product
-        }).then(()=>{
-            alert("succes")
-            setIsOpen(false)
-            handlePost()
-        })
+const Handleposting = (e) => {
+  e.preventDefault();
+  axios.post("http://localhost:5000/create/sales", {
+    name,
+    quantity,
+    product,   // price laga saaray
+  })
+  .then((res) => {
+    toast.success("Sale created successfully!");
+    setIsOpen(false);
+    handlePost();
+    setName("");
+    setQuantity("");
+    setProduct("");
+    setPrice("");
+  })
+  .catch((err) => {
+    if (err.response && err.response.data && err.response.data.message) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error("Unexpected error occurred");
     }
+  });
+};
+
 
 //   read
     const handlePost=()=>{
@@ -61,8 +73,23 @@ export default function Selles(){
             }, 3000);
         })
     }
+    const [medecine,setMedeicne]=useState([])
+   function handleReadMedecine(){
+    axios.get("http://localhost:5000/read/medicine").then((res)=>{
+      setMedeicne(res.data)
+    })
+   }
+useEffect(() => {
+  if (product) {
+    const med = medecine.find((m) => m.name === product);
+    setPrice(med?.sell || 0);
+  } else {
+    setPrice(0);
+  }
+  handleReadMedecine()
+}, [product, medecine]);
 
-
+   
     return <>
      <div  style={{display:isOpen==true?"none":""}} className="pt-7  ">
         <div className=" flex justify-between px-6">
@@ -76,10 +103,11 @@ export default function Selles(){
           <thead class="bg-blue-50 text-black ">
             <tr>
               <th class="px-7 py-2 text-center text-2xl font-semibold">ID</th>
-              <th class="px-7 py-2 text-center text-2xl font-semibold">Name of Patient</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">Patient</th>
               <th class="px-7 py-2 text-center text-2xl font-semibold">productName</th>
               <th class="px-7 py-2 text-center text-2xl font-semibold">price</th>
               <th class="px-7 py-2 text-center text-2xl font-semibold">quantity</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">ToatlPrice</th>
               <th class="px-7 py-2 text-center text-2xl font-semibold">Actions</th>
             </tr>
           </thead>
@@ -90,8 +118,9 @@ export default function Selles(){
                   <td class="px-6 py-3">{item.seId}</td>
                   <td class="px-6 py-3">{item.name}</td>
                   <td class="px-6 py-3">{item.product}</td>
-                  <td class="px-6 py-3">${item.price}</td>
+                  <td className="px-6 py-3">${medecine.find((m) => m.name === item.product)?.sell || 0}</td>
                   <td class="px-6 py-3">{item.quantity}</td>
+                  <td class="px-6 py-3">  ${ (medecine.find((m) => m.name === item.product)?.sell || 0) * item.quantity }</td>
                   <td class="px-6 py-3">
                     <div className="flex gap-2 items-center">
              <Link to={`/dashboard/Updateselles/${item._id}`}> <i className="fa-solid fa-edit text-blue-500"></i>  </Link>  
@@ -109,16 +138,51 @@ export default function Selles(){
           <ToastContainer/>
 
         
-    <div style={{display:isOpen==true?"block":""}} className="w-[500px] mx-auto mt-10 ml-64 p-6 bg-white rounded-lg shadow-md hidden">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Add Product</h2>
-      <form  className="flex flex-col gap-4">
-        <input type="text"  placeholder="Name"  value={name} onChange={(e) => setName(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  />
-        <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  />
-        <input type="text" placeholder="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  />
-        <input type="text" placeholder="Product name"  value={product} onChange={(e) => setProduct(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  />
-        <button onClick={Handleposting} type="submit" className="p-3 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors" > Submit
-        </button>
-      </form>
-    </div>
+    <div style={{display:isOpen?"block":""}} className="w-[500px] mx-auto mt-10 ml-64 p-6 bg-white rounded-lg shadow-md hidden">
+  <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Add Product</h2>
+  <form className="flex flex-col gap-4">
+    <input 
+      type="text"  
+      placeholder="Name"  
+      value={name} 
+      onChange={(e) => setName(e.target.value)} 
+      className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  
+    />
+
+   <select value={product} onChange={(e) => setProduct(e.target.value)} className="p-3 border ...">
+  <option value="">Select Product</option>
+  {medecine.map((m) => (
+    <option key={m._id} value={m.name}>
+      {m.name} 
+    </option>
+  ))}
+</select>
+
+
+    <input 
+      type="number" 
+      placeholder="Quantity" 
+      value={quantity} 
+      onChange={(e) => setQuantity(e.target.value)} 
+      className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  
+    />
+
+    {/* Optional: display price automatically (read-only) */}
+    {product && (
+      <input 
+        type="number"
+        value={price ? price : ""} 
+        placeholder="Price"
+        readOnly
+        className="p-3 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
+      />
+    )}
+
+    <button onClick={Handleposting} type="submit" className="p-3 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors"> 
+      Submit
+    </button>
+  </form>
+</div>
+
     </>  
 }
