@@ -6,7 +6,6 @@ const medecineSchema=mongoose.Schema({
     category:{type:String, required:true},
     purchase:{type:Number, required:true},
     sell:{type:Number, required:true},
-    profit:{type:Number, required:true},
     quantity:{type:Number, required:true},
 })
 

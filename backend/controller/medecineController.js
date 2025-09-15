@@ -2,7 +2,7 @@ const medecineModel=require("../models/medecineModel")
 
 const createMedecine=async(req,res)=>{
     try {
-       const {name,category,quantity,sell,purchase,profit} =req.body
+       const {name,category,quantity,sell,purchase} =req.body
       
        const newData= medecineModel({
         name:name,
@@ -10,7 +10,6 @@ const createMedecine=async(req,res)=>{
         quantity:quantity,
         sell:sell,
         purchase:purchase,
-        profit:profit,
         mImage:req.file.filename
        })
 
@@ -57,7 +56,6 @@ const updateMedicine = async (req,res) =>{
                     sell:req.body.sell,
                     purchase:req.body.purchase,
                     quantity:req.body.quantity,
-                    profit:req.body.profit,
                     category:req.body.category,
                     mImage:req.file ? req.file.filename : undefined  
                 }

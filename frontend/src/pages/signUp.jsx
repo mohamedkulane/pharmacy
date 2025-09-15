@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+import img from '../assets/pharmacy.png'
 export default function SignUpForm() {
   const [name,setName]=useState("")
   const [email,setEmail]=useState("")
@@ -9,7 +10,7 @@ export default function SignUpForm() {
   const navigate=useNavigate()
   function handleRegister(e){
     e.preventDefault()
-    axios.post("http://localhost:5100/create/admin",{
+    axios.post("http://localhost:5000/create/admin",{
       name,
       email,
       password
@@ -32,8 +33,9 @@ export default function SignUpForm() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg ring-1 ring-black/5 overflow-hidden">
         <div className="border-t-4 border-blue-600" />
         <div className="p-8">
-          <header className="mb-6">
-            <h1 className="text-2xl font-semibold text-black">Create account</h1>
+          <header className="mb-6 flex gap-1 items-center justify-center flex-col">
+            <img className="w-12" src={img} alt="" />
+            <h1 className="text-2xl font-bold text-black">Pharmacy</h1>
           </header>
 
           <form className="space-y-4" aria-label="signup form (no functionality)">

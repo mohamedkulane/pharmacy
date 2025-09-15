@@ -1,7 +1,7 @@
 import { Sidebar } from "../components/sidebar";
 
 export default function Dashboard(){
-    return <div>
+    return <div >
         <Sidebar/>
     </div>
 }

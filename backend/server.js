@@ -21,4 +21,4 @@ app.use("/allImg",express.static("images"))
 app.use(LoanRoute)
 
 mongoose.connect(process.env.DB_URL).then(()=> console.log("succes connection.."))
-app.listen(5100, ()=>console.log("server is running..."))
+app.listen(5000, ()=>console.log("server is running..."))

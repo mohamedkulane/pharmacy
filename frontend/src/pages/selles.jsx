@@ -25,7 +25,7 @@ export default function Selles(){
 
     const Handleposting = (e) =>{
         e.preventDefault()
-        axios.post("http://localhost:5100/create/sales",{
+        axios.post("http://localhost:5000/create/sales",{
             "name":name,
             "quantity":quantity,
             "price":price,
@@ -39,7 +39,7 @@ export default function Selles(){
 
 //   read
     const handlePost=()=>{
-        axios.get("http://localhost:5100/read/sales").then((res)=>{
+        axios.get("http://localhost:5000/read/sales").then((res)=>{
              setData(res.data)
         })
     }
@@ -49,7 +49,7 @@ export default function Selles(){
 
     // delee
     const HandleDelete = (id)=>{
-        axios.delete(`http://localhost:5100/delete/sales/${id}`).then(()=>{  
+        axios.delete(`http://localhost:5000/delete/sales/${id}`).then(()=>{  
             toast("Delete sales Success",{
                 position: "top-right",
                 autoClose:2000,
@@ -65,36 +65,37 @@ export default function Selles(){
 
     return <>
      <div  style={{display:isOpen==true?"none":""}} className="pt-7  ">
-        <div className="ml-96 flex justify-between px-6">
-            <div>
-                <button onClick={HandleOpen} className="px-8 py-2 rounded-lg text-2xl text-white bg-blue-300">Add New</button>
+        <div className=" flex justify-between px-6">
+            <div className="flex gap-[36rem] items-center">
+                <h1 className="text-3xl font-semibold">Selles:</h1>
+                <button onClick={HandleOpen} className="px-8 py-2 rounded-lg text-2xl text-white bg-blue-500 font-medium"> <i className="fa-solid fa-plus"></i>Add New</button>
             </div>
           
         </div>
-     <table className="text-center mt-3 ml-20 w-[900px]   rounded-2xl overflow-hidden">
-          <thead class="bg-blue-300 text-white ">
+     <table className="text-center mt-3    ">
+          <thead class="bg-blue-50 text-black ">
             <tr>
-              <th class="px-2 py-2 text-center text-xl font-semibold">ID</th>
-              <th class="px-2 py-2 text-center text-xl font-semibold">Name</th>
-              <th class="px-2 py-2 text-center text-xl font-semibold">product</th>
-              <th class="px-2 py-2 text-center text-xl font-semibold">price</th>
-              <th class="px-2 py-2 text-center text-xl font-semibold">quantity</th>
-              <th class="px-2 py-2 text-center text-xl font-semibold">Actions</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">ID</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">Name of Patient</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">productName</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">price</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">quantity</th>
+              <th class="px-7 py-2 text-center text-2xl font-semibold">Actions</th>
             </tr>
           </thead>
         {
             data.map((item)=>{
                 return  <tbody class="text-center text-black text-2xl">
-                <tr class=" border-black border-b-2">
-                  <td class="px-4 py-3">{item.seId}</td>
-                  <td class="px-4 py-3">{item.name}</td>
-                  <td class="px-4 py-3">{item.product}</td>
-                  <td class="px-4 py-3">{item.price}</td>
-                  <td class="px-4 py-3">{item.quantity}</td>
-                  <td class="px-4 py-3">
-                    <div className="space-x-5">
-             <Link to={`/Updateselles/${item._id}`}> <i className="fa-solid fa-edit text-green-500"></i>  </Link>  
-               <i onClick={()=> HandleDelete(item._id)}  className="fa-solid fa-trash text-red-600"></i>
+                <tr class="  border-b">
+                  <td class="px-6 py-3">{item.seId}</td>
+                  <td class="px-6 py-3">{item.name}</td>
+                  <td class="px-6 py-3">{item.product}</td>
+                  <td class="px-6 py-3">${item.price}</td>
+                  <td class="px-6 py-3">{item.quantity}</td>
+                  <td class="px-6 py-3">
+                    <div className="flex gap-2 items-center">
+             <Link to={`/dashboard/Updateselles/${item._id}`}> <i className="fa-solid fa-edit text-blue-500"></i>  </Link>  
+               <i onClick={()=> HandleDelete(item._id)}  className="fa-solid fa-trash "></i>
                   </div>
                   </td>
                 </tr>  

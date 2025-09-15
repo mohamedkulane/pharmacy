@@ -10,23 +10,23 @@ import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 export function Sidebar() {
-  const getAdmin = localStorage.getItem("admin");
+  const getAdmin = localStorage.getItem("Admin");
   const [isopen, setisopen] = useState(true);
 
   return (
     <div className="flex gap-6">
       <aside
-        style={{ width: isopen ? "230px" : "80px" }}
-        className="bg-white border-r border-blue-100 flex flex-col p-3 min-h-screen relative transition-all duration-300"
+        style={{ width: isopen ? "220px" : "80px" }}
+        className="bg-white border-r border-blue-100 flex flex-col p-3 h-screen sticky top-0 left-0   transition-all duration-300"
       >
         {/* Profile Section */}
         <div className="flex items-center gap-2 mt-3 ml-1">
           <h1 className="w-9 h-9 bg-blue-600 text-white ml-1 pb-1.5 rounded-full text-2xl font-bold text-center flex items-center justify-center">
-            {JSON.parse(getAdmin).data?.customer.name[0]}
+            {JSON.parse(getAdmin).data?.Admin.name[0]}
           </h1>
           {isopen && (
             <h1 className="text-black text-lg font-medium">
-              Admin_<br /> {JSON.parse(getAdmin).data?.customer.name}
+              Admin_<br /> {JSON.parse(getAdmin).data?.Admin.name}
             </h1>
           )}
         </div>

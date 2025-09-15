@@ -27,9 +27,9 @@ export default function App(){
       <Route path="borrowed" element={<BorrowedDebts/>}/>
       <Route path="seles" element={<Selles/>}/>
       <Route path="loans" element={<Loans/>}/>
+      <Route path="Updatemedicine/:id" element={<UpdateMedicine/>}/>
+      <Route path="Updateselles/:id" element={<UpdateSelles/>}/>
       </Route>
-      <Route path="/Updatemedicine/:id" element={<UpdateMedicine/>}/>
-      <Route path="/Updateselles/:id" element={<UpdateSelles/>}/>
     </Routes>
       <ToastContainer  position="top-center" autoClose={3000} />
   </div>

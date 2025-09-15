@@ -8,8 +8,7 @@ export default function Login() {
   const navigate=useNavigate()
   function handleRegister(e){
     e.preventDefault()
-    axios.post("http://localhost:5100/login/admin",{
-      name,
+    axios.post("http://localhost:5000/login/admin",{
       email,
       password
     }).then((res)=>{
@@ -33,7 +32,7 @@ export default function Login() {
         <div className="border-t-4 border-blue-600" />
         <div className="p-8">
           <header className="mb-6">
-            <h1 className="text-2xl font-semibold text-black">Create account</h1>
+            <h1 className="text-2xl font-bold text-black">SignIn account</h1>
           </header>
 
           <form className="space-y-4" aria-label="signup form (no functionality)">

@@ -1,3 +1,127 @@
-export default function MainDashboard(){
-    return <h1>dashboard page</h1>
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
+
+export default function MainDashboard() {
+  const [medicines, setMedicines] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [loans, setLoans] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [medRes, salesRes, loanRes] = await Promise.all([
+          axios.get("http://localhost:5000/read/medicine"),
+          axios.get("http://localhost:5000/read/sales"),
+          axios.get("http://localhost:5000/read/loan")
+        ]);
+        setMedicines(medRes.data);
+        setSales(salesRes.data);
+        setLoans(loanRes.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Cards calculations
+  const totalMedicines = medicines.length;
+  const totalSales = sales.reduce((acc, item) => acc + item.price , 0);
+  const totalLoans = loans.reduce((acc, item) => acc + item.price-item.paid, 0);
+
+  // Pie chart: Sales by Product
+  const salesByProduct = [];
+  sales.forEach((s) => {
+    const existing = salesByProduct.find((p) => p.name === s.product);
+    if (existing) existing.value += s.price * s.quantity;
+    else salesByProduct.push({ name: s.product, value: s.price * s.quantity });
+  });
+
+  // Bar chart: Loans Paid vs Unpaid
+  const loansChartData = loans.map((loan) => ({
+    name: loan.name,
+    Paid: loan.paid,
+    Unpaid: loan.price - loan.paid,
+  }));
+
+  // Bar chart: Medicines by Category
+  const medicineByCategory = [];
+  medicines.forEach((m) => {
+    const existing = medicineByCategory.find((c) => c.category === m.category);
+    if (existing) existing.value += 1;
+    else medicineByCategory.push({ category: m.category, value: 1 });
+  });
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28FD0", "#FF6B6B"];
+
+  return (
+    <div className="p-6  min-h-screen ">
+      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard Overview</h1>
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="bg-white p-6 rounded shadow text-center">
+          <h2 className="text-xl font-semibold">Total Medicines</h2>
+          <p className="text-3xl mt-2">{totalMedicines}</p>
+        </div>
+        <div className="bg-white p-6 rounded shadow text-center">
+          <h2 className="text-xl font-semibold">Total Sales</h2>
+          <p className="text-3xl mt-2">${totalSales}</p>
+        </div>
+        <div className="bg-white p-6 rounded shadow text-center">
+          <h2 className="text-xl font-semibold">Total Loans</h2>
+          <p className="text-3xl mt-2">${totalLoans}</p>
+        </div>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-semibold mb-4 text-center">Sales by Product</h2>
+          <PieChart width={300} height={300}>
+            <Pie
+              data={salesByProduct}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#8884d8"
+              label
+            >
+              {salesByProduct.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </div>
+
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-semibold mb-4 text-center">Loans Paid vs Unpaid</h2>
+          <BarChart width={400} height={300} data={loansChartData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Paid" fill="#82ca9d" />
+            <Bar dataKey="Unpaid" fill="#8884d8" />
+          </BarChart>
+        </div>
+      </div>
+
+      {/* Medicines by Category Chart */}
+      <div className="bg-white p-6 rounded shadow mt-6">
+        <h2 className="text-xl font-semibold mb-4 text-center">Medicines by Category</h2>
+        <BarChart width={600} height={300} data={medicineByCategory}>
+          <XAxis dataKey="category" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#FF8042" />
+        </BarChart>
+      </div>
+    </div>
+  );
 }

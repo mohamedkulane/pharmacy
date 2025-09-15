@@ -8,16 +8,14 @@ function UpdateMedicine ()
     const [mImage,setprImage] = useState("")
     const [sell,setSell] = useState("")
     const [quantity,setQuantity] = useState("")
-    const [profit,setProfit] = useState("")
     const [category,setCategory] = useState("")
     const [purchase,setPurchase] = useState("")
     const params = useParams()
     const ReadSingleMedicine = () =>{
-        axios.get(`http://localhost:5100/single/medicine/${params.id}`).then((res)=>{
+        axios.get(`http://localhost:5000/single/medicine/${params.id}`).then((res)=>{
                setName(res.data[0].name)
                setSell(res.data[0].sell)
                setQuantity(res.data[0].quantity)
-               setProfit(res.data[0].profit)
                setCategory(res.data[0].category)
                setPurchase(res.data[0].purchase)
                setprImage(res.data[0].setprImage)
@@ -32,7 +30,6 @@ function UpdateMedicine ()
       formDta.append("img",mImage)
        formDta.append("name",name)
        formDta.append("sell",sell)
-       formDta.append("profit",profit)
        formDta.append("purchase",purchase)
        formDta.append("quantity",quantity)
        formDta.append("category",category)
@@ -40,13 +37,13 @@ function UpdateMedicine ()
 
 const updateMedicine = (e)=>{
    e.preventDefault()
-   axios.put (`http://localhost:5100/update/medicine/${params.id}`,formDta, {
+   axios.put (`http://localhost:5000/update/medicine/${params.id}`,formDta, {
         headers:{
            "Content-Type": "multipart/form-data"
         }
    }).then(()=>{
       alert("updated")
-      navigate("/medecine")
+      navigate("/dashboard/medecine")
    })
 }
 
@@ -60,7 +57,6 @@ const updateMedicine = (e)=>{
         <input type="file" placeholder="Image"  onChange={(e) => setprImage(e.target.files[0])} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <input type="number" placeholder="Sell Price" value={sell} onChange={(e) => setSell(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <input type="number" placeholder="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"  required/>
-        <input type="number" placeholder="Profit" value={profit} onChange={(e) => setProfit(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
         <input type="text" placeholder="Category"  value={category} onChange={(e) => setCategory(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <input type="number" placeholder="Purchase Price"  value={purchase} onChange={(e) => setPurchase(e.target.value)} className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <button onClick={updateMedicine}  type="submit" className="p-3 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors" > Submit
