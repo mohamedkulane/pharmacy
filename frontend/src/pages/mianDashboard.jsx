@@ -6,14 +6,16 @@ export default function MainDashboard() {
     const [medicines, setMedicines] = useState([]);
   const [sales, setSales] = useState([]);
   const [loans, setLoans] = useState([]);
+  const [debt, setDebts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [medRes, salesRes, loanRes] = await Promise.all([
+        const [medRes, salesRes, loanRes,debtRes] = await Promise.all([
           axios.get("http://localhost:5000/read/medicine"),
           axios.get("http://localhost:5000/read/sales"),
-          axios.get("http://localhost:5000/read/loan")
+          axios.get("http://localhost:5000/read/loan"),
+          axios.get("http://localhost:5000/read/debts")
         ]);
 
         const medicinesData = medRes.data;
@@ -27,6 +29,7 @@ export default function MainDashboard() {
         setMedicines(medicinesData);
         setSales(salesWithPrice);
         setLoans(loanRes.data);
+        setDebts(debtRes.data);
       } catch (err) {
         console.error(err);
       }
@@ -34,11 +37,11 @@ export default function MainDashboard() {
     fetchData();
   }, []);
 
-  // Cards calculations
 // Cards calculations
-const totalMedicines = medicines.length;
+const totalMedicines = medicines.filter(m => m.quantity > 0).length;
 const totalSales = sales.reduce((acc, item) => acc + item.price * item.quantity, 0);
 const totalLoans = loans.reduce((acc, item) => acc + (item.price - item.paid), 0);
+const totalDebts = debt.reduce((acc, item) => acc + (item.price - item.paidAmount), 0);
 
 
   // Pie chart: Sales by Product
@@ -56,10 +59,18 @@ sales.forEach((s) => {
     Paid: loan.paid,
     Unpaid: loan.price - loan.paid,
   }));
+  // debts
+  const DebtChartData = debt.map((debt) => ({
+    name: debt.companyName,
+    Paid: debt.paidAmount,
+    Unpaid: debt.price - debt.paidAmount,
+  }));
 
   // Bar chart: Medicines by Category
   const medicineByCategory = [];
-  medicines.forEach((m) => {
+  medicines
+    .filter(m => m.quantity > 0)
+    .forEach((m) => {
     const existing = medicineByCategory.find((c) => c.category === m.category);
     if (existing) existing.value += 1;
     else medicineByCategory.push({ category: m.category, value: 1 });
@@ -82,8 +93,11 @@ sales.forEach((s) => {
           <p className="text-3xl mt-2">${totalSales}</p>
         </div>
         <div className="bg-white p-6 rounded shadow text-center">
-          <h2 className="text-xl font-semibold">Total Loans</h2>
-          <p className="text-3xl mt-2">${totalLoans}</p>
+          <h2 className="text-xl font-semibold">Total Loans & Debts</h2>
+          <div className="flex gap-1 text-center justify-center">
+          <p className="text-3xl mt-2">${totalLoans}/</p>
+          <p className="text-3xl mt-2">${totalDebts}</p>
+          </div>
         </div>
       </div>
 
@@ -124,15 +138,28 @@ sales.forEach((s) => {
       </div>
 
       {/* Medicines by Category Chart */}
+      <div className="flex gap-3">
       <div className="bg-white p-6 rounded shadow mt-6">
         <h2 className="text-xl font-semibold mb-4 text-center">Medicines by Category</h2>
-        <BarChart width={600} height={300} data={medicineByCategory}>
+        <BarChart width={400} height={300} data={medicineByCategory}>
           <XAxis dataKey="category" />
           <YAxis />
           <Tooltip />
           <Legend />
           <Bar dataKey="value" fill="#FF8042" />
         </BarChart>
+      </div>
+          <div className="bg-white p-6 rounded shadow mt-6">
+          <h2 className="text-xl font-semibold mb-4 text-center">Debts Paid vs Unpaid</h2>
+          <BarChart width={400} height={300} data={DebtChartData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Paid" fill="#ADD8E6" />
+            <Bar dataKey="Unpaid" fill="#8884d8" />
+          </BarChart>
+        </div>
       </div>
     </div>
   );

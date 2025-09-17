@@ -7,6 +7,7 @@ const MedecineRoute=require("../backend/router/medecineRouter")
 const AdminRoute=require("../backend/router/adminRouter")
 const salesRoute = require("../backend/router/salesRouter")
 const LoanRoute=require("../backend/router/loanRouter")
+const DebtRoute=require("../backend/router/debtRouter")
 
 
 
@@ -19,6 +20,7 @@ app.use(AdminRoute)
 app.use(salesRoute)
 app.use("/allImg",express.static("images"))
 app.use(LoanRoute)
+app.use(DebtRoute)
 
 mongoose.connect(process.env.DB_URL).then(()=> console.log("succes connection.."))
 app.listen(5000, ()=>console.log("server is running..."))

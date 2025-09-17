@@ -12,6 +12,7 @@ import UpdateLoans from "./pages/upadateLoan";
 import UpdateMedicine from "./pages/UpdateMed";
 import UpdateSelles from "./pages/UpdateSelles";
 import { ToastContainer } from "react-toastify";
+import Debts from "./pages/BorrowedDebts";
 
 
 export default function App(){
@@ -24,7 +25,7 @@ export default function App(){
       <Route path="maindashboard" element={<MainDashboard/>}/>
       <Route path="reports" element={<Reports/>}/>
       <Route path="updateLoan/:id" element={<UpdateLoans/>}/>
-      <Route path="borrowed" element={<BorrowedDebts/>}/>
+      <Route path="borrowed" element={<Debts/>}/>
       <Route path="seles" element={<Selles/>}/>
       <Route path="loans" element={<Loans/>}/>
       <Route path="Updatemedicine/:id" element={<UpdateMedicine/>}/>

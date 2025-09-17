@@ -23,6 +23,8 @@ export default function Medecine(){
     const [quantity,setQuantity] = useState("")
     const [category,setCategory] = useState("")
     const [purchase,setPurchase] = useState("")
+    const [search,setSearch]=useState("")
+
     const formDta = new FormData()
        formDta.append("img",mImage)
        formDta.append("name",name)
@@ -92,7 +94,8 @@ export default function Medecine(){
             </tr>
           </thead>
         {
-            data.map((item)=>{
+          data.filter((item) => item.quantity > 0)
+            .map((item)=>{
                 return  <tbody class="text-center text-black text-2xl">
                 <tr class=" border-b ">
                   <td class="px-10 py-3">{item.prId}</td>

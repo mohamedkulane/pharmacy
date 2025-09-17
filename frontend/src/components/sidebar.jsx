@@ -5,14 +5,19 @@ import {
   Wallet,
   Banknote,
   BarChart,
+  LogOut
 } from "lucide-react";
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export function Sidebar() {
   const getAdmin = localStorage.getItem("Admin");
   const [isopen, setisopen] = useState(true);
-
+  const navigate=useNavigate()
+  function handleLogOut(){
+    localStorage.clear()
+    navigate("/")
+  }
   return (
     <div className="flex gap-6">
       <aside
@@ -72,6 +77,9 @@ export function Sidebar() {
         </div>
 
         {/* Toggle button */}
+        <div onClick={handleLogOut} className="flex gap-1 items-center cursor-pointer">
+        <LogOut className="ml-3 "/><span className="text-xl font-bold">LogOut</span>
+        </div>
         <button
           onClick={() => setisopen(!isopen)}
           className="absolute bottom-4 right-2 text-2xl text-gray-700 hover:text-blue-600"

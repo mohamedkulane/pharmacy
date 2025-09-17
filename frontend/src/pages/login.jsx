@@ -66,7 +66,6 @@ export default function Login() {
                 Sign In account
               </button>
             </div>
-
         
           </form>
         </div>
