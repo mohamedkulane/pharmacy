@@ -8,5 +8,5 @@ router.get("/read/medicine",medecineController.readMedicine)
 router.put("/update/medicine/:id",uploadImage.single("img"),medecineController.updateMedicine)
 router.get("/single/medicine/:id",medecineController.Readsingle)
 router.delete("/delete/medicine/:id",medecineController.deleteMedicine)
-router.get("/search", medecineController.searchMedicine);
+
 module.exports=router

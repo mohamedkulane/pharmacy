@@ -117,31 +117,8 @@ const deleteMedicine = async (req,res)=>{
         res.send("Deleted")
     }
 }
-// Search medicines by name or category (case-insensitive)
-const searchMedicine = async (req, res) => {
-  try {
-    const { query } = req.query; // URL query, e.g., ?query=Paracetamol
-
-    if (!query) {
-      return res.status(400).json({ message: "Query is required" });
-    }
-
-    // Raadi name ama category ku jira query
-    const results = await medecineModel.find({
-      $or: [
-        { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
-      ],
-      quantity: { $gt: 0 } // kaliya kuwa aan eber ahayn
-    });
-
-    res.json(results);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 
 
-module.exports={createMedecine,readMedicine,updateMedicine,Readsingle,deleteMedicine ,searchMedicine}
+
+module.exports={createMedecine,readMedicine,updateMedicine,Readsingle,deleteMedicine }

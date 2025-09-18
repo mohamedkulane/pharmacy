@@ -11,4 +11,4 @@ const medecineSchema=mongoose.Schema({
 
 
 medecineSchema.plugin(AutoIncrement, { inc_field: 'prId' });
-module.exports=mongoose.model("medecine", medecineSchema)
+module.exports=mongoose.model("medecines", medecineSchema)
