@@ -1,33 +1,51 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Legend,
+} from "recharts";
 
 export default function MainDashboard() {
-    const [medicines, setMedicines] = useState([]);
+  const [medicines, setMedicines] = useState([]);
   const [sales, setSales] = useState([]);
   const [loans, setLoans] = useState([]);
-  const [debt, setDebts] = useState([]);
+  const [debts, setDebts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [medRes, salesRes, loanRes,debtRes] = await Promise.all([
+        const [medRes, salesRes, loanRes, debtRes] = await Promise.all([
           axios.get("http://localhost:5000/read/medicine"),
           axios.get("http://localhost:5000/read/sales"),
           axios.get("http://localhost:5000/read/loan"),
-          axios.get("http://localhost:5000/read/debts")
+          axios.get("http://localhost:5000/read/debts"),
         ]);
 
         const medicinesData = medRes.data;
 
-        // Ku dar price sales-ka oo ka yimaada medicines.sell
-        const salesWithPrice = salesRes.data.map((s) => {
-          const med = medicinesData.find((m) => m.name === s.product);
-          return { ...s, price: med ? med.sell : 0 };
-        });
+        // Flatten sales.items[]
+        const flattenedSales = salesRes.data.flatMap((s) =>
+          s.items.map((item) => {
+            const med = medicinesData.find((m) => m.name === item.product);
+            return {
+              customer: s.name,
+              product: item.product,
+              quantity: item.quantity,
+              price: item.price || med?.sell || 0,
+              createdAt: s.createdAt,
+            };
+          })
+        );
 
         setMedicines(medicinesData);
-        setSales(salesWithPrice);
+        setSales(flattenedSales);
         setLoans(loanRes.data);
         setDebts(debtRes.data);
       } catch (err) {
@@ -37,50 +55,70 @@ export default function MainDashboard() {
     fetchData();
   }, []);
 
-// Cards calculations
-const totalMedicines = medicines.filter(m => m.quantity > 0).length;
-const totalSales = sales.reduce((acc, item) => acc + item.price * item.quantity, 0);
-const totalLoans = loans.reduce((acc, item) => acc + (item.price - item.paid), 0);
-const totalDebts = debt.reduce((acc, item) => acc + (item.price - item.paidAmount), 0);
+  // --------- Totals ----------
+  const totalMedicines = medicines.filter((m) => m.quantity > 0).length;
+  const totalSales = sales.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const totalLoans = loans.reduce(
+    (acc, item) => acc + (item.price - item.paid),
+    0
+  );
+  const totalDebts = debts.reduce(
+    (acc, item) => acc + (item.price - item.paidAmount),
+    0
+  );
 
+  // --------- Charts ----------
+  // Sales by Product
+  const salesByProduct = [];
+  sales.forEach((s) => {
+    const existing = salesByProduct.find((p) => p.name === s.product);
+    if (existing) existing.value += s.price * s.quantity;
+    else salesByProduct.push({ name: s.product, value: s.price * s.quantity });
+  });
 
-  // Pie chart: Sales by Product
- const salesByProduct = [];
-sales.forEach((s) => {
-  const existing = salesByProduct.find((p) => p.name === s.product);
-  if (existing) existing.value += s.price * s.quantity;
-  else salesByProduct.push({ name: s.product, value: s.price * s.quantity });
-});
-
-
-  // Bar chart: Loans Paid vs Unpaid
+  // Loans chart
   const loansChartData = loans.map((loan) => ({
     name: loan.name,
     Paid: loan.paid,
     Unpaid: loan.price - loan.paid,
   }));
-  // debts
-  const DebtChartData = debt.map((debt) => ({
+
+  // Debts chart
+  const debtsChartData = debts.map((debt) => ({
     name: debt.companyName,
     Paid: debt.paidAmount,
     Unpaid: debt.price - debt.paidAmount,
   }));
 
-  // Bar chart: Medicines by Category
+  // Medicines by Category
   const medicineByCategory = [];
   medicines
-    .filter(m => m.quantity > 0)
+    .filter((m) => m.quantity > 0)
     .forEach((m) => {
-    const existing = medicineByCategory.find((c) => c.category === m.category);
-    if (existing) existing.value += 1;
-    else medicineByCategory.push({ category: m.category, value: 1 });
-  });
+      const existing = medicineByCategory.find(
+        (c) => c.category === m.category
+      );
+      if (existing) existing.value += 1;
+      else medicineByCategory.push({ category: m.category, value: 1 });
+    });
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28FD0", "#FF6B6B"];
+  const COLORS = [
+    "#0088FE",
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#A28FD0",
+    "#FF6B6B",
+  ];
 
   return (
-    <div className="p-6  min-h-screen ">
-      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard Overview</h1>
+    <div className="p-6 min-h-screen ">
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Dashboard Overview
+      </h1>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -95,8 +133,8 @@ sales.forEach((s) => {
         <div className="bg-white p-6 rounded shadow text-center">
           <h2 className="text-xl font-semibold">Total Loans & Debts</h2>
           <div className="flex gap-1 text-center justify-center">
-          <p className="text-3xl mt-2">${totalLoans}/</p>
-          <p className="text-3xl mt-2">${totalDebts}</p>
+            <p className="text-3xl mt-2">${totalLoans}/</p>
+            <p className="text-3xl mt-2">${totalDebts}</p>
           </div>
         </div>
       </div>
@@ -104,7 +142,9 @@ sales.forEach((s) => {
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-semibold mb-4 text-center">Sales by Product</h2>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Sales by Product
+          </h2>
           <PieChart width={300} height={300}>
             <Pie
               data={salesByProduct}
@@ -117,7 +157,10 @@ sales.forEach((s) => {
               label
             >
               {salesByProduct.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Pie>
             <Tooltip />
@@ -125,8 +168,10 @@ sales.forEach((s) => {
         </div>
 
         <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-semibold mb-4 text-center">Loans Paid vs Unpaid</h2>
-          <BarChart width={400} height={300} data={loansChartData}>
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Loans Paid vs Unpaid
+          </h2>
+          <BarChart sm:width={400} width={300} height={300} data={loansChartData}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
@@ -137,21 +182,25 @@ sales.forEach((s) => {
         </div>
       </div>
 
-      {/* Medicines by Category Chart */}
-      <div className="flex gap-3">
-      <div className="bg-white p-6 rounded shadow mt-6">
-        <h2 className="text-xl font-semibold mb-4 text-center">Medicines by Category</h2>
-        <BarChart width={400} height={300} data={medicineByCategory}>
-          <XAxis dataKey="category" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#FF8042" />
-        </BarChart>
-      </div>
-          <div className="bg-white p-6 rounded shadow mt-6">
-          <h2 className="text-xl font-semibold mb-4 text-center">Debts Paid vs Unpaid</h2>
-          <BarChart width={400} height={300} data={DebtChartData}>
+      {/* Medicines & Debts Charts */}
+      <div className="flex gap-3 flex-wrap">
+        <div className="bg-white p-6 rounded shadow mt-6">
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Medicines by Category
+          </h2>
+          <BarChart sm:width={400} width={333} height={300} data={medicineByCategory}>
+            <XAxis dataKey="category" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#FF8042" />
+          </BarChart>
+        </div>
+        <div className="bg-white p-6 rounded shadow mt-6">
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            Debts Paid vs Unpaid
+          </h2>
+          <BarChart sm:width={400} width={330} height={300} data={debtsChartData}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />

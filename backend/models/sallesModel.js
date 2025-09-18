@@ -1,11 +1,15 @@
-const mongoose=require("mongoose")
-const  AutoIncrement = require('mongoose-sequence')(mongoose);
-const sellesSchema=mongoose.Schema({
-    name:{type:String, required:true},
-    product:{type:String, required:true},
-    // price:{type:Number, required:true},
-    quantity:{type:Number, required:true},
-})
-sellesSchema.plugin(AutoIncrement, { inc_field: 'seId' });
+const mongoose = require("mongoose");
 
-module.exports=mongoose.model("sells",sellesSchema)
+const saleSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  items: [
+    {
+      product: { type: String, required: true },
+      quantity: { type: Number, required: true },
+      price: { type: Number, required: true }
+    }
+  ],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("Sale", saleSchema);

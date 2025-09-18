@@ -38,15 +38,7 @@ const updateDebt = async (req, res) => {
     const updateData = await debtModel.updateOne(
       { _id: req.params.id },
       {
-        $set: {
-          companyName: req.body.companyName,
-          phone: req.body.phone,
-          address: req.body.address,
-          productName: req.body.productName,
-          price: req.body.price,
-          quantity: req.body.quantity,
-          paidAmount: req.body.paidAmount,
-        },
+        $set: req.body
       }
     )
     if (updateData.modifiedCount > 0) {
@@ -62,7 +54,7 @@ const updateDebt = async (req, res) => {
 // Read single debt
 const readSingleDebt = async (req, res) => {
   try {
-    const debt = await debtModel.findById(req.params.id)
+    const debt = await debtModel.find({_id:req.params.id})
     if (debt) {
       res.status(200).json(debt)
     } else {

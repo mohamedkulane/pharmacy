@@ -13,6 +13,7 @@ import UpdateMedicine from "./pages/UpdateMed";
 import UpdateSelles from "./pages/UpdateSelles";
 import { ToastContainer } from "react-toastify";
 import Debts from "./pages/BorrowedDebts";
+import UpdateDebts from "./pages/updateDebts";
 
 
 export default function App(){
@@ -30,6 +31,7 @@ export default function App(){
       <Route path="loans" element={<Loans/>}/>
       <Route path="Updatemedicine/:id" element={<UpdateMedicine/>}/>
       <Route path="Updateselles/:id" element={<UpdateSelles/>}/>
+      <Route path="Updatedebts/:id" element={<UpdateDebts/>}/>
       </Route>
     </Routes>
       <ToastContainer  position="top-center" autoClose={3000} />
