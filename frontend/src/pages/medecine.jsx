@@ -31,7 +31,7 @@ export default function Medecine() {
 
   const HandlePosting = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:5000/create/medicine", formDta).then(() => {
+    axios.post("https://pharmacy-backend-2-kalr.onrender.com/create/medicine", formDta).then(() => {
       toast.success("Medicine Added!");
       setIsOpen(false);
       handlePost();
@@ -40,7 +40,7 @@ export default function Medecine() {
 
   // read
   const handlePost = () => {
-    axios.get("http://localhost:5000/read/medicine").then((res) => {
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/medicine").then((res) => {
       setData(res.data);
     });
   };
@@ -50,7 +50,7 @@ export default function Medecine() {
 
   // delete
   const HandleDelete = (id) => {
-    axios.delete(`http://localhost:5000/delete/medicine/${id}`).then(() => {
+    axios.delete(`https://pharmacy-backend-2-kalr.onrender.com/delete/medicine/${id}`).then(() => {
       toast("Delete medicine Success", {
         position: "top-right",
         autoClose: 2000,
@@ -102,7 +102,7 @@ export default function Medecine() {
                     <td className="py-2">
                       <img
                         className="w-12 h-12 sm:w-14 sm:h-14 border rounded-lg"
-                        src={`http://localhost:5000/allImg/${item.mImage}`}
+                        src={`https://pharmacy-backend-2-kalr.onrender.com/allImg/${item.mImage}`}
                         alt={item.name}
                       />
                     </td>

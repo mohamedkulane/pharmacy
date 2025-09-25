@@ -22,10 +22,10 @@ export default function MainDashboard() {
     const fetchData = async () => {
       try {
         const [medRes, salesRes, loanRes, debtRes] = await Promise.all([
-          axios.get("http://localhost:5000/read/medicine"),
-          axios.get("http://localhost:5000/read/sales"),
-          axios.get("http://localhost:5000/read/loan"),
-          axios.get("http://localhost:5000/read/debts"),
+          axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/medicine"),
+          axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/sales"),
+          axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/loan"),
+          axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/debts"),
         ]);
 
         const medicinesData = medRes.data;

@@ -27,7 +27,7 @@ export default function Debts() {
   // post debt
   const HandlePosting = (e) => {
     e.preventDefault()
-    axios.post("http://localhost:5000/create/debt", {
+    axios.post("https://pharmacy-backend-2-kalr.onrender.com/create/debt", {
       companyName,
       phone,
       address,
@@ -53,7 +53,7 @@ export default function Debts() {
 
   // read debts
   const handleFetch = () => {
-    axios.get("http://localhost:5000/read/debts").then((res) => {
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/debts").then((res) => {
       setData(res.data)
     })
   }
@@ -63,7 +63,7 @@ export default function Debts() {
 
   // delete debt
   const HandleDelete = (id) => {
-    axios.delete(`http://localhost:5000/delete/debt/${id}`).then(() => {
+    axios.delete(`https://pharmacy-backend-2-kalr.onrender.com/delete/debt/${id}`).then(() => {
       toast("Debt deleted successfully", {
         position: "top-right",
         autoClose: 2000,

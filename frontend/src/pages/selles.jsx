@@ -18,14 +18,14 @@ export default function SalesPage() {
 
   // Fetch medicines
   useEffect(() => {
-    axios.get("http://localhost:5000/read/medicine")
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/medicine")
       .then(res => setMedecine(res.data))
       .catch(err => console.error(err));
   }, []);
 
   // Fetch sales
   const fetchSales = () => {
-    axios.get("http://localhost:5000/read/sales")
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/sales")
       .then(res => setSales(res.data))
       .catch(err => console.error(err));
   };
@@ -74,7 +74,7 @@ export default function SalesPage() {
       };
     });
 
-    axios.post("http://localhost:5000/create/sales", { name, items: itemsToSend })
+    axios.post("https://pharmacy-backend-2-kalr.onrender.com/create/sales", { name, items: itemsToSend })
       .then(() => {
         toast.success("Sale created successfully!");
         setName("");

@@ -14,7 +14,7 @@ function UpdateSelles ()
     const params = useParams()
     const navigate=useNavigate()
     const ReadSingleSales = () =>{
-        axios.get(`http://localhost:5000/single/sales/${params.id}`).then((res)=>{
+        axios.get(`https://pharmacy-backend-2-kalr.onrender.com/single/sales/${params.id}`).then((res)=>{
                setName(res.data[0].name)
                setPrice(res.data[0].price)
                setQuantity(res.data[0].quantity)
@@ -28,7 +28,7 @@ function UpdateSelles ()
 
       const HandleUpdated = (e) =>{
         e.preventDefault()
-        axios.put(`http://localhost:5000/update/sales/${params.id}`,{
+        axios.put(`https://pharmacy-backend-2-kalr.onrender.com/update/sales/${params.id}`,{
             "name":name,
             "price":price,
             "quantity":quantity,

@@ -16,7 +16,7 @@ export default function UpdateDebts(){
 const navigate=useNavigate()
 const params=useParams()
     function handleReadSingle(){
-        axios.get(`http://localhost:5000/single/debt/${params.id}`).then((res)=>{
+        axios.get(`https://pharmacy-backend-2-kalr.onrender.com/single/debt/${params.id}`).then((res)=>{
             setcompanyName(res.data[0].companyName),
             setPhone(res.data[0].phone),
             setAddress(res.data[0].address),
@@ -33,7 +33,7 @@ useEffect(()=>{
 
     function handleUpdate(e){
         e.preventDefault()
-      axios.put(`http://localhost:5000/update/debt/${params.id}`,{
+      axios.put(`https://pharmacy-backend-2-kalr.onrender.com/update/debt/${params.id}`,{
         companyName,
         phone,
         address,

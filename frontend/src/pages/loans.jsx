@@ -16,7 +16,7 @@ export default function Loans() {
   function handlePost(e) {
     e.preventDefault()
 
-    axios.post("http://localhost:5000/create/loan", {
+    axios.post("https://pharmacy-backend-2-kalr.onrender.com/create/loan", {
       name,
       address,
       phone,
@@ -35,7 +35,7 @@ export default function Loans() {
   }
 
   function handleRead() {
-    axios.get("http://localhost:5000/read/loan").then((res) => {
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/loan").then((res) => {
       setData(res.data)
     })
   }
@@ -46,7 +46,7 @@ export default function Loans() {
 
   // delete
   function handleDelete(id) {
-    axios.delete(`http://localhost:5000/delete/loan/${id}`).then(() => {
+    axios.delete(`https://pharmacy-backend-2-kalr.onrender.com/delete/loan/${id}`).then(() => {
       Swal.fire({
         title: "Deleted successfully!",
         icon: "success",

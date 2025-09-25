@@ -12,7 +12,7 @@ function UpdateMedicine ()
     const [purchase,setPurchase] = useState("")
     const params = useParams()
     const ReadSingleMedicine = () =>{
-        axios.get(`http://localhost:5000/single/medicine/${params.id}`).then((res)=>{
+        axios.get(`https://pharmacy-backend-2-kalr.onrender.com/single/medicine/${params.id}`).then((res)=>{
                setName(res.data[0].name)
                setSell(res.data[0].sell)
                setQuantity(res.data[0].quantity)
@@ -37,7 +37,7 @@ function UpdateMedicine ()
 
 const updateMedicine = (e)=>{
    e.preventDefault()
-   axios.put (`http://localhost:5000/update/medicine/${params.id}`,formDta, {
+   axios.put (`https://pharmacy-backend-2-kalr.onrender.com/update/medicine/${params.id}`,formDta, {
         headers:{
            "Content-Type": "multipart/form-data"
         }

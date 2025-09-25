@@ -16,10 +16,10 @@ export default function Reports() {
   const fetchData = async () => {
     try {
       let url = "";
-      if (activeSection === "debts") url = "http://localhost:5000/read/debts";
-      if (activeSection === "loans") url = "http://localhost:5000/read/loan";
-      if (activeSection === "medicine") url = "http://localhost:5000/read/medicine";
-      if (activeSection === "sales") url = "http://localhost:5000/read/sales";
+      if (activeSection === "debts") url = "https://pharmacy-backend-2-kalr.onrender.com/read/debts";
+      if (activeSection === "loans") url = "https://pharmacy-backend-2-kalr.onrender.com/read/loan";
+      if (activeSection === "medicine") url = "https://pharmacy-backend-2-kalr.onrender.com/read/medicine";
+      if (activeSection === "sales") url = "https://pharmacy-backend-2-kalr.onrender.com/read/sales";
       const res = await axios.get(url);
       setData(res.data);
     } catch (err) {
@@ -48,7 +48,7 @@ export default function Reports() {
       exportData = filteredData.map((item, index) => ({
         ID: index + 1,
         Name: item.name,
-        ImageURL: `http://localhost:5000/allImg/${item.mImage}`,
+        ImageURL: `https://pharmacy-backend-2-kalr.onrender.com/allImg/${item.mImage}`,
         SellPrice: item.sell,
         PurchasePrice: item.purchase,
         Profit: item.sell - item.purchase,
@@ -87,7 +87,7 @@ export default function Reports() {
   };
 
   function handleReadMedecine() {
-    axios.get("http://localhost:5000/read/medicine").then((res) => {
+    axios.get("https://pharmacy-backend-2-kalr.onrender.com/read/medicine").then((res) => {
       setMedeicne(res.data);
     });
   }
@@ -181,7 +181,7 @@ export default function Reports() {
                 {activeSection === "medicine" && (
                   <td>
                     <img
-                      src={`http://localhost:5000/allImg/${item.mImage}`}
+                      src={`https://pharmacy-backend-2-kalr.onrender.com/allImg/${item.mImage}`}
                       alt={item.name}
                       className="w-10 h-10 sm:w-14 sm:h-14 mx-auto object-cover"
                     />
